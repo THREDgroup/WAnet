@@ -2,7 +2,7 @@ backend: theano
 class_name: Model
 config:
   input_layers:
-  - [input_3, 0, 0]
+  - [input_1, 0, 0]
   layers:
   - class_name: InputLayer
     config:
@@ -15,10 +15,10 @@ config:
         - !!binary |
           wAAAAAAAAAA=
       dtype: float32
-      name: input_3
+      name: input_1
       sparse: false
     inbound_nodes: []
-    name: input_3
+    name: input_1
   - class_name: Dense
     config:
       activation: relu
@@ -33,16 +33,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_6
+      name: dense_1
       trainable: true
       units: 64
       use_bias: true
     inbound_nodes:
-    - - - input_3
+    - - - input_1
         - 0
         - 0
         - {}
-    name: dense_6
+    name: dense_1
   - class_name: Dense
     config:
       activation: linear
@@ -57,17 +57,17 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_7
+      name: dense_2
       trainable: true
       units: 16
       use_bias: true
     inbound_nodes:
-    - - - dense_6
+    - - - dense_1
         - 0
         - 0
         - {}
-    name: dense_7
-  name: model_6
+    name: dense_2
+  name: model_2
   output_layers:
-  - [dense_7, 0, 0]
+  - [dense_2, 0, 0]
 keras_version: 2.0.5

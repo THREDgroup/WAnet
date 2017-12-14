@@ -2,16 +2,16 @@ backend: theano
 class_name: Model
 config:
   input_layers:
-  - [input_2, 0, 0]
+  - [input_4, 0, 0]
   layers:
   - class_name: InputLayer
     config:
       batch_input_shape: !!python/tuple [null, 16]
       dtype: float32
-      name: input_2
+      name: input_4
       sparse: false
     inbound_nodes: []
-    name: input_2
+    name: input_4
   - class_name: Dense
     config:
       activation: relu
@@ -26,16 +26,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_4
+      name: dense_9
       trainable: true
       units: 256
       use_bias: true
     inbound_nodes:
-    - - - input_2
+    - - - input_4
         - 0
         - 0
         - {}
-    name: dense_4
+    name: dense_9
   - class_name: Dense
     config:
       activation: sigmoid
@@ -50,7 +50,7 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_5
+      name: dense_10
       trainable: true
       units: !!python/object/apply:numpy.core.multiarray.scalar
       - !!python/object/apply:numpy.dtype
@@ -60,12 +60,12 @@ config:
         AIAAAAAAAAA=
       use_bias: true
     inbound_nodes:
-    - - - dense_4
+    - - - dense_9
         - 0
         - 0
         - {}
-    name: dense_5
-  name: model_3
+    name: dense_10
+  name: model_7
   output_layers:
-  - [dense_5, 0, 0]
+  - [dense_10, 0, 0]
 keras_version: 2.0.5

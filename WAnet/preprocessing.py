@@ -28,20 +28,20 @@ def generate_data():
         "box": {
             "vars": {
                 "length": [3, 10],
-                "width": [3, 10],
+                "width":  [3, 10],
                 "height": [3, 10]
             }
         },
         "cone": {
             "vars": {
-                "diameter":z [3, 10],
-                "height": [3, 10]
+                "diameter": [3, 10],
+                "height":   [3, 10]
             }
         },
         "cylinder": {
             "vars": {
                 "diameter": [3, 10],
-                "height": [3, 10]
+                "height":   [3, 10]
             }
         },
         "sphere": {
@@ -52,7 +52,7 @@ def generate_data():
         "wedge": {
             "vars": {
                 "length": [3, 10],
-                "width": [3, 10],
+                "width":  [3, 10],
                 "height": [3, 7.5]
             }
         },
@@ -111,6 +111,7 @@ def generate_data():
             WAnet.openwec.helpers.clean_directory()
 
     return True
+
 
 def extract_data(N=1000):
     # Define constants

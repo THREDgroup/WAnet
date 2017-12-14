@@ -2,16 +2,16 @@ backend: theano
 class_name: Model
 config:
   input_layers:
-  - [input_6, 0, 0]
+  - [input_1, 0, 0]
   layers:
   - class_name: InputLayer
     config:
       batch_input_shape: !!python/tuple [null, 192]
       dtype: float32
-      name: input_6
+      name: input_1
       sparse: false
     inbound_nodes: []
-    name: input_6
+    name: input_1
   - class_name: Dense
     config:
       activation: relu
@@ -26,16 +26,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_16
+      name: dense_1
       trainable: false
       units: 64
       use_bias: true
     inbound_nodes:
-    - - - input_6
+    - - - input_1
         - 0
         - 0
         - {}
-    name: dense_16
+    name: dense_1
   - class_name: Dense
     config:
       activation: relu
@@ -50,16 +50,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_17
+      name: dense_2
       trainable: false
       units: 16
       use_bias: true
     inbound_nodes:
-    - - - dense_16
+    - - - dense_1
         - 0
         - 0
         - {}
-    name: dense_17
+    name: dense_2
   - class_name: Dense
     config:
       activation: relu
@@ -74,16 +74,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_18
+      name: dense_3
       trainable: true
       units: 16
       use_bias: true
     inbound_nodes:
-    - - - dense_17
+    - - - dense_2
         - 0
         - 0
         - {}
-    name: dense_18
+    name: dense_3
   - class_name: Dense
     config:
       activation: relu
@@ -98,16 +98,16 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_19
+      name: dense_4
       trainable: false
       units: 256
       use_bias: true
     inbound_nodes:
-    - - - dense_18
+    - - - dense_3
         - 0
         - 0
         - {}
-    name: dense_19
+    name: dense_4
   - class_name: Dense
     config:
       activation: sigmoid
@@ -122,17 +122,17 @@ config:
         class_name: VarianceScaling
         config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
       kernel_regularizer: null
-      name: dense_20
+      name: dense_5
       trainable: false
       units: 32768
       use_bias: true
     inbound_nodes:
-    - - - dense_19
+    - - - dense_4
         - 0
         - 0
         - {}
-    name: dense_20
-  name: model_10
+    name: dense_5
+  name: model_1
   output_layers:
-  - [dense_20, 0, 0]
+  - [dense_5, 0, 0]
 keras_version: 2.0.5
