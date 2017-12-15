@@ -1,8 +1,6 @@
 language: python
 python:
   - "3.6.1"
-env:
-  - KERAS_BACKEND=theano
 # command to install dependencies
 install: "pip install -r requirements.txt"
 # command to run tests
