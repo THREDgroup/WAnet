@@ -1,7 +1,7 @@
 **Contributors:** {% for member in site.github.contributors %}<a href="{{member.html_url}}"><img src="{{member.avatar_url}}" width="32" height="32"></a>{% endfor %}
 
 ## Introduction
-The Wave Analysis Network (WAnet) is a neural network for producing wave-structure interaction forces for ocean applciations. This repository contains all software required to recreate the network from scratch.
+The Wave Analysis Network (WAnet) is a neural network for producing wave-structure interaction forces for ocean applciations. This repository contains all software required to recreate the networks.
 
 ## Table of Contents
 * [The Basics]()
