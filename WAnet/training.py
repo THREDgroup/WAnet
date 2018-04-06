@@ -4,6 +4,7 @@ import numpy
 import pkg_resources
 import os
 
+VERBOSE = 1
 
 def load_data():
     curves = numpy.load(pkg_resources.resource_filename('WAnet', 'data/compiled_data/data_curves.npz'))['curves']
@@ -79,15 +80,15 @@ def train_geometry_autoencoder(epochs, latent_dim, save_results, print_network):
 
     x_train, x_test = sklearn.model_selection.train_test_split(new_geometry, shuffle=False)
 
-    weights = pkg_resources.resource_filename('WAnet', 'trained_models/temp_vae_weights.h5')
-    logger = pkg_resources.resource_filename('WAnet', 'trained_models/geometry_vae_training.csv')
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'temp_vae_weights.h5')
+    logger = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_vae_training.csv')
     vae.fit(x_train,
             shuffle=True,
             epochs=epochs,
             batch_size=batch_size,
             validation_data=(x_test, None),
-            verbose=1,
-            callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=1, save_best_only=True),
+            verbose=VERBOSE,
+            callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True),
                        keras.callbacks.CSVLogger(logger, separator=',', append=False)])
 
     vae.load_weights(weights)
@@ -111,29 +112,29 @@ def train_geometry_autoencoder(epochs, latent_dim, save_results, print_network):
     weights = []
     if save_results:
         # Save encoder structure and weights
-        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_encoder_structure.yml'), 'w')
+        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_encoder_structure.yml'), 'w')
         temp.write(encoder.to_yaml())
         temp.close()
-        encoder.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_encoder_weights.h5'))
+        encoder.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_encoder_weights.h5'))
 
         # Save decoder structure and weights
-        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_decoder_structure.yml'), 'w')
+        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_decoder_structure.yml'), 'w')
         temp.write(generator.to_yaml())
         temp.close()
-        generator.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_decoder_weights.h5'))
+        generator.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_decoder_weights.h5'))
 
         # Save full autoencoder structure and weights
-        structure = pkg_resources.resource_filename('WAnet', 'trained_models/geometry_autoencoder_structure.yml')
-        weights = pkg_resources.resource_filename('WAnet', 'trained_models/geometry_autoencoder_weights.h5')
+        structure = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_autoencoder_structure.yml')
+        weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_autoencoder_weights.h5')
         temp = open(structure, 'w')
         temp.write(autoencoder.to_yaml())
         temp.close()
         autoencoder.save_weights(weights)
 
     if print_network:
-        keras.utils.plot_model(generator, to_file=pkg_resources.resource_filename('WAnet', 'figures/geometry_decoder.eps'), show_shapes=True)
-        keras.utils.plot_model(encoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/geometry_encoder.eps'), show_shapes=True)
-        keras.utils.plot_model(autoencoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/geometry_autoencoder.eps'), show_shapes=True)
+        keras.utils.plot_model(generator, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'geometry_decoder.eps'), show_shapes=True)
+        keras.utils.plot_model(encoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'geometry_encoder.eps'), show_shapes=True)
+        keras.utils.plot_model(autoencoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'geometry_autoencoder.eps'), show_shapes=True)
 
     # Final check on metrics
     x_pred = autoencoder.predict(x_test)
@@ -144,7 +145,7 @@ def train_geometry_autoencoder(epochs, latent_dim, save_results, print_network):
     print("Final BCE: "+str(mse))
     print("Final S2: "+str(s2))
     print("Final R2: "+str(r2))
-    return True
+    return r2
 
 
 def train_response_autoencoder(epochs, latent_dim, save_results, print_network):
@@ -200,16 +201,16 @@ def train_response_autoencoder(epochs, latent_dim, save_results, print_network):
 
     # train the VAE on MNIST digits
     x_train, x_test = sklearn.model_selection.train_test_split(new_curves, shuffle=False)
-    weights = pkg_resources.resource_filename('WAnet', 'trained_models/temp_vae_weights.h5')
-    logger = pkg_resources.resource_filename('WAnet', 'trained_models/curve_vae_training.csv')
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'temp_vae_weights.h5')
+    logger = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_vae_training.csv')
 
     vae.fit(x_train,
             shuffle=True,
             epochs=epochs,
             batch_size=batch_size,
             validation_data=(x_test, None),
-            verbose=1,
-            callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=1, save_best_only=True),
+            verbose=VERBOSE,
+            callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True),
                        keras.callbacks.CSVLogger(logger, separator=',', append=False)])
 
     vae.load_weights(weights)
@@ -231,29 +232,29 @@ def train_response_autoencoder(epochs, latent_dim, save_results, print_network):
 
     if save_results:
         # Save encoder structure and weights
-        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/curve_encoder_structure.yml'), 'w')
+        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_encoder_structure.yml'), 'w')
         temp.write(encoder.to_yaml())
         temp.close()
-        encoder.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/curve_encoder_weights.h5'))
+        encoder.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_encoder_weights.h5'))
 
         # Save decoder structure and weights
-        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/curve_decoder_structure.yml'), 'w')
+        temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_decoder_structure.yml'), 'w')
         temp.write(generator.to_yaml())
         temp.close()
-        generator.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/curve_decoder_weights.h5'))
+        generator.save_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_decoder_weights.h5'))
 
         # Save full autoencoder structure and weights
-        structure = pkg_resources.resource_filename('WAnet', 'trained_models/curve_autoencoder_structure.yml')
-        weights = pkg_resources.resource_filename('WAnet', 'trained_models/curve_autoencoder_weights.h5')
+        structure = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_autoencoder_structure.yml')
+        weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_autoencoder_weights.h5')
         temp = open(structure, 'w')
         temp.write(autoencoder.to_yaml())
         temp.close()
         autoencoder.save_weights(weights)
 
     if print_network:
-        keras.utils.plot_model(generator, to_file=pkg_resources.resource_filename('WAnet', 'figures/curve_decoder.eps'), show_shapes=True)
-        keras.utils.plot_model(encoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/curve_encoder.eps'), show_shapes=True)
-        keras.utils.plot_model(autoencoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/curve_autoencoder.eps'), show_shapes=True)
+        keras.utils.plot_model(generator, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'curve_decoder.eps'), show_shapes=True)
+        keras.utils.plot_model(encoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'curve_encoder.eps'), show_shapes=True)
+        keras.utils.plot_model(autoencoder, to_file=pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'curve_autoencoder.eps'), show_shapes=True)
 
     x_pred = autoencoder.predict(x_test)
     s2 = numpy.mean(numpy.power(numpy.mean(x_test.flatten()) - x_test.flatten(), 2))
@@ -263,7 +264,7 @@ def train_response_autoencoder(epochs, latent_dim, save_results, print_network):
     print("Final S2: "+str(s2))
     print("Final R2: "+str(r2))
 
-    return True
+    return r2
 
 
 def train_forward_network(epochs, latent_dim, save_results, print_network):
@@ -282,14 +283,14 @@ def train_forward_network(epochs, latent_dim, save_results, print_network):
     mdl.compile(optimizer='rmsprop', loss='mse')
 
     # # Instantiate and freeze layers if possible
-    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_encoder_structure.yml'), 'r')
+    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_encoder_structure.yml'), 'r')
     geo = keras.models.model_from_yaml(temp.read())
-    geo.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_encoder_weights.h5'))
+    geo.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_encoder_weights.h5'))
 
     # Load curve autoencoder
-    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/curve_decoder_structure.yml'), 'r')
+    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_decoder_structure.yml'), 'r')
     curve = keras.models.model_from_yaml(temp.read())
-    curve.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/curve_decoder_weights.h5'))
+    curve.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_decoder_weights.h5'))
 
     mdl.layers[1].set_weights(geo.layers[1].get_weights())
     mdl.layers[1].trainable = False
@@ -302,22 +303,22 @@ def train_forward_network(epochs, latent_dim, save_results, print_network):
     mdl.layers[5].trainable = False
 
     # Make file names
-    weights = pkg_resources.resource_filename('WAnet', 'trained_models/forward_weights.h5')
-    structure = pkg_resources.resource_filename('WAnet', 'trained_models/forward_structure.yml')
-    plot = pkg_resources.resource_filename('WAnet', 'figures/forward.eps')
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'forward_weights.h5')
+    structure = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'forward_structure.yml')
+    plot = pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'forward.eps')
 
     # Save model structure and start training
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(new_geometry, new_curves, shuffle=False)
     if save_results:
-        mdl.fit(x_train, y_train, verbose=1, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
-                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=1, save_best_only=True)])
+        mdl.fit(x_train, y_train, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
+                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True)])
 
         # Save decoder structure and weights
         temp = open(structure, 'w')
         temp.write(mdl.to_yaml())
         temp.close()
     else:
-        mdl.fit(new_geometry, new_curves, verbose=1, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
+        mdl.fit(new_geometry, new_curves, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
 
     if print_network:
         keras.utils.plot_model(mdl, to_file=plot, show_shapes=True)
@@ -332,7 +333,7 @@ def train_forward_network(epochs, latent_dim, save_results, print_network):
     print("Final S2: "+str(s2))
     print("Final R2: "+str(r2))
 
-    return True
+    return r2
 
 
 def train_inverse_network(epochs, latent_dim, save_results, print_network):
@@ -351,14 +352,14 @@ def train_inverse_network(epochs, latent_dim, save_results, print_network):
     mdl.compile(optimizer='rmsprop', loss='binary_crossentropy')
 
     # # Instantiate and freeze layers if possible
-    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_decoder_structure.yml'), 'r')
+    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_decoder_structure.yml'), 'r')
     geo = keras.models.model_from_yaml(temp.read())
-    geo.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/geometry_decoder_weights.h5'))
+    geo.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'geometry_decoder_weights.h5'))
 
     # Load curve autoencoder
-    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/curve_encoder_structure.yml'), 'r')
+    temp = open(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_encoder_structure.yml'), 'r')
     curve = keras.models.model_from_yaml(temp.read())
-    curve.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/curve_encoder_weights.h5'))
+    curve.load_weights(pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'curve_encoder_weights.h5'))
 
     mdl.layers[1].set_weights(curve.layers[1].get_weights())
     mdl.layers[1].trainable = False
@@ -371,21 +372,21 @@ def train_inverse_network(epochs, latent_dim, save_results, print_network):
     mdl.layers[5].trainable = False
 
     # Make file names
-    weights = pkg_resources.resource_filename('WAnet', 'trained_models/inverse_weights.h5')
-    structure = pkg_resources.resource_filename('WAnet', 'trained_models/inverse_structure.yml')
-    plot = pkg_resources.resource_filename('WAnet', 'figures/inverse.eps')
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'inverse_weights.h5')
+    structure = pkg_resources.resource_filename('WAnet', 'trained_models/'+str(latent_dim)+'inverse_structure.yml')
+    plot = pkg_resources.resource_filename('WAnet', 'figures/'+str(latent_dim)+'inverse.eps')
 
     # Save model structure and start training
     x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(new_curves, new_geometry, shuffle=False)
     if save_results:
-        mdl.fit(new_curves, new_geometry, verbose=1, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
-                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=1, save_best_only=True)])
+        mdl.fit(new_curves, new_geometry, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
+                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True)])
         # Save decoder structure and weights
         temp = open(structure, 'w')
         temp.write(mdl.to_yaml())
         temp.close()
     else:
-        mdl.fit(new_curves, new_geometry, verbose=1, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
+        mdl.fit(new_curves, new_geometry, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
 
     if print_network:
         keras.utils.plot_model(mdl, to_file=plot, show_shapes=True)
@@ -402,4 +403,105 @@ def train_inverse_network(epochs, latent_dim, save_results, print_network):
     print("Final S2: "+str(s2))
     print("Final R2: "+str(r2))
 
-    return True
+    return r2
+
+
+def train_simple_inverse_network(epochs, save_results, print_network):
+    curves, geometry, S, N, D, F, G, new_curves, new_geometry = load_data()
+
+    # Define model
+    x   = keras.layers.Input(shape=(192,))
+    de1 = keras.layers.Dense(384, activation='relu')(x)
+    de2 = keras.layers.Dense(768, activation='relu')(de1)
+    con = keras.layers.Dense(1536, activation='relu')(de2)
+    dd2 = keras.layers.Dense(3072, activation='relu')(con)
+    y   = keras.layers.Dense(32768, activation='sigmoid')(dd2)
+
+    # Build and compile ,model
+    mdl = keras.models.Model(x, y)
+    mdl.compile(optimizer='rmsprop', loss='binary_crossentropy')
+
+    # Make file names
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/simple_inverse_weights.h5')
+    structure = pkg_resources.resource_filename('WAnet', 'trained_models/simple_inverse_structure.yml')
+    plot = pkg_resources.resource_filename('WAnet', 'figures/simple_inverse.eps')
+
+    # Save model structure and start training
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(new_curves, new_geometry, shuffle=False)
+    if save_results:
+        mdl.fit(new_curves, new_geometry, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
+                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True)])
+        # Save decoder structure and weights
+        temp = open(structure, 'w')
+        temp.write(mdl.to_yaml())
+        temp.close()
+    else:
+        mdl.fit(new_curves, new_geometry, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
+
+    if print_network:
+        keras.utils.plot_model(mdl, to_file=plot, show_shapes=True)
+
+
+    # Final check on metrics
+    mdl.load_weights(weights)
+    y_pred = mdl.predict(x_test)
+    mse = keras.backend.mean(keras.losses.binary_crossentropy(y_pred, y_test)).eval()
+    y_pred.fill(numpy.mean(x_test.flatten()))
+    s2 = keras.backend.mean(keras.losses.binary_crossentropy(y_pred, y_test)).eval()
+    r2 = 1-mse/s2
+    print("Final BCE: "+str(mse))
+    print("Final S2: "+str(s2))
+    print("Final R2: "+str(r2))
+
+    return r2
+
+
+def train_simple_forward_network(epochs, save_results, print_network):
+
+    curves, geometry, S, N, D, F, G, new_curves, new_geometry = load_data()
+
+    # Define model
+    x   = keras.layers.Input(shape=(32768,))
+    de1 = keras.layers.Dense(3072, activation='relu')(x)
+    de2 = keras.layers.Dense(1536, activation='relu')(de1)
+    con = keras.layers.Dense(768, activation='relu')(de2)
+    dd2 = keras.layers.Dense(384, activation='relu')(con)
+    y   = keras.layers.Dense(192, activation='sigmoid')(dd2)
+
+
+    # Build and compile ,model
+    mdl = keras.models.Model(x, y)
+    mdl.compile(optimizer='rmsprop', loss='mse')
+
+    # Make file names
+    weights = pkg_resources.resource_filename('WAnet', 'trained_models/simple_forward_weights.h5')
+    structure = pkg_resources.resource_filename('WAnet', 'trained_models/simple_forward_structure.yml')
+    plot = pkg_resources.resource_filename('WAnet', 'figures/simple_forward.eps')
+
+    # Save model structure and start training
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(new_geometry, new_curves, shuffle=False)
+    if save_results:
+        mdl.fit(x_train, y_train, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test),
+                callbacks=[keras.callbacks.ModelCheckpoint(filepath=weights, verbose=VERBOSE, save_best_only=True)])
+
+        # Save decoder structure and weights
+        temp = open(structure, 'w')
+        temp.write(mdl.to_yaml())
+        temp.close()
+    else:
+        mdl.fit(new_geometry, new_curves, verbose=VERBOSE, epochs=epochs, shuffle=False, validation_data=(x_test, y_test))
+
+    if print_network:
+        keras.utils.plot_model(mdl, to_file=plot, show_shapes=True)
+
+    #
+    mdl.load_weights(weights)
+    y_pred = mdl.predict(x_test)
+    s2 = numpy.mean(numpy.power(numpy.mean(y_test.flatten()) - y_test.flatten(), 2))
+    mse = keras.backend.mean(keras.losses.mean_squared_error(y_pred, y_test)).eval()
+    r2 = 1 - mse / s2
+    print("Final MSE: " + str(mse))
+    print("Final S2: " + str(s2))
+    print("Final R2: " + str(r2))
+
+    return r2

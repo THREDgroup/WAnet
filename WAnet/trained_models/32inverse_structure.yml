@@ -1,0 +1,138 @@
+backend: theano
+class_name: Model
+config:
+  input_layers:
+  - [input_30, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 192]
+      dtype: float32
+      name: input_30
+      sparse: false
+    inbound_nodes: []
+    name: input_30
+  - class_name: Dense
+    config:
+      activation: relu
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_96
+      trainable: false
+      units: 64
+      use_bias: true
+    inbound_nodes:
+    - - - input_30
+        - 0
+        - 0
+        - {}
+    name: dense_96
+  - class_name: Dense
+    config:
+      activation: relu
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_97
+      trainable: false
+      units: 32
+      use_bias: true
+    inbound_nodes:
+    - - - dense_96
+        - 0
+        - 0
+        - {}
+    name: dense_97
+  - class_name: Dense
+    config:
+      activation: relu
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_98
+      trainable: true
+      units: 32
+      use_bias: true
+    inbound_nodes:
+    - - - dense_97
+        - 0
+        - 0
+        - {}
+    name: dense_98
+  - class_name: Dense
+    config:
+      activation: relu
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_99
+      trainable: false
+      units: 256
+      use_bias: true
+    inbound_nodes:
+    - - - dense_98
+        - 0
+        - 0
+        - {}
+    name: dense_99
+  - class_name: Dense
+    config:
+      activation: sigmoid
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_100
+      trainable: false
+      units: 32768
+      use_bias: true
+    inbound_nodes:
+    - - - dense_99
+        - 0
+        - 0
+        - {}
+    name: dense_100
+  name: model_50
+  output_layers:
+  - [dense_100, 0, 0]
+keras_version: 2.0.5

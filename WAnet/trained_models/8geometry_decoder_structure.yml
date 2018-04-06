@@ -1,0 +1,71 @@
+backend: theano
+class_name: Model
+config:
+  input_layers:
+  - [input_16, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 8]
+      dtype: float32
+      name: input_16
+      sparse: false
+    inbound_nodes: []
+    name: input_16
+  - class_name: Dense
+    config:
+      activation: relu
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_49
+      trainable: true
+      units: 256
+      use_bias: true
+    inbound_nodes:
+    - - - input_16
+        - 0
+        - 0
+        - {}
+    name: dense_49
+  - class_name: Dense
+    config:
+      activation: sigmoid
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_50
+      trainable: true
+      units: !!python/object/apply:numpy.core.multiarray.scalar
+      - !!python/object/apply:numpy.dtype
+        args: [i8, 0, 1]
+        state: !!python/tuple [3, <, null, null, null, -1, -1, 0]
+      - !!binary |
+        AIAAAAAAAAA=
+      use_bias: true
+    inbound_nodes:
+    - - - dense_49
+        - 0
+        - 0
+        - {}
+    name: dense_50
+  name: model_27
+  output_layers:
+  - [dense_50, 0, 0]
+keras_version: 2.0.5
