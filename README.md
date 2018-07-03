@@ -1,1 +1,1 @@
-See [the docs](https://hsdl.github.io/WAnet/) for more information.
+See [the docs](https://thred.github.io/WAnet/) for more information.

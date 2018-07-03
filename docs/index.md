@@ -15,4 +15,4 @@ The Wave Analysis Network (WAnet) is a neural network for producing wave-structu
 
 ## Acknowledgements
 This work has been submitted to the [Design Computing and Cognition Conference](http://dccconferences.org/dcc18/).
-*Portions of this repository (specifically, those in [openwec.py](https://github.com/HSDL/WAnet/tree/master/WAnet/openwec.py)) are based on [openWEC](https://github.com/tverbrug/openWEC)*
+*Portions of this repository (specifically, those in [openwec.py](https://github.com/THREDgroup/WAnet/tree/master/WAnet/openwec.py)) are based on [openWEC](https://github.com/tverbrug/openWEC)*
